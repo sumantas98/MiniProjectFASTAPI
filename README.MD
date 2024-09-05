@@ -24,7 +24,7 @@ Execute the below command in your active directory to install all packages for t
 All the project commit has been drafted in the below attached link.
 https://github.com/sumantas98/MiniProjectFASTAPI/commits?author=sumantas98&since=2024-08-31&until=
 
-## Additional Information:
+## Additional Information & API Snippet:
 ![img.png](img.png)
 ## TestCases:
 
