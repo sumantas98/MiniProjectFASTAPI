@@ -1,7 +1,9 @@
+from typing import List
 from fastapi.params import Depends
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.functions import mode
-from fastapi import FastAPI
+from fastapi import FastAPI, Response, HTTPException
+from starlette import status
 from . import schemas
 from . import models
 from .database import engine_n, SessionLocal
@@ -24,7 +26,7 @@ async def root():
 
 
 # Get All Product Details
-@app.get("/products")
+@app.get("/products", response_model=List[schemas.Product], status_code=201)
 async def products(db: Session = Depends(getDB)):
     product_ = db.query(models.Product).all()
     return product_
@@ -32,8 +34,10 @@ async def products(db: Session = Depends(getDB)):
 
 # Get Product Details by ID Value
 @app.get("/product_id", response_model=schemas.CustomDisplay)
-async def products(db: Session = Depends(getDB), product_id: int = None):
+async def products(product_id, response: Response, db: Session = Depends(getDB)):
     product_id = db.query(models.Product).filter_by(id=product_id).first()
+    if not product_id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail='Product not found')
     return product_id
 
 
