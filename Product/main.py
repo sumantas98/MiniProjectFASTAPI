@@ -38,13 +38,13 @@ def getDB():
         db.close()
 
 
-@app.get("/")
+@app.get("/", tags=['Index'])
 async def root():
     return {"message": "Please visit this page for all operations :: http://127.0.0.1:8000/docs"}
 
 
 # Get All Product Details
-@app.get("/allProducts", response_model=List[schemas.CustomDisplay], status_code=201)
+@app.get("/allProducts", response_model=List[schemas.CustomDisplay], status_code=201, tags=['Products'])
 async def products(db: Session = Depends(getDB)):
     product_ = db.query(models.Product).all()
     if not product_:
@@ -53,7 +53,7 @@ async def products(db: Session = Depends(getDB)):
 
 
 # Get Product Details by ID Value
-@app.get("/singleProductById", response_model=schemas.CustomDisplay)
+@app.get("/singleProductById", response_model=schemas.CustomDisplay,tags=['Products'])
 async def products(product_id, response: Response, db: Session = Depends(getDB)):
     product_id = db.query(models.Product).filter_by(id=product_id).first()
     if not product_id:
@@ -62,7 +62,7 @@ async def products(product_id, response: Response, db: Session = Depends(getDB))
 
 
 # Remove a specific Product by ID value
-@app.delete("/deleteProduct")
+@app.delete("/deleteProduct", tags=['Products'])
 async def products(db: Session = Depends(getDB), product_id: int = None):
     product_id = db.query(models.Product).filter_by(id=product_id).delete(synchronize_session=False)
     if not product_id:
@@ -72,7 +72,7 @@ async def products(db: Session = Depends(getDB), product_id: int = None):
 
 
 # Add New Product in DB Using Postman call/ FastAPI Docs.
-@app.post('/addProduct')
+@app.post('/addProduct', tags=['Products'])
 async def addProduct(product: schemas.Product, db: Session = Depends(getDB)):
     new_product = models.Product(name=product.name, price=product.price, description=product.description,
                                  seller_id=product.seller_id)
@@ -83,7 +83,7 @@ async def addProduct(product: schemas.Product, db: Session = Depends(getDB)):
 
 
 # Update a records based on ID value
-@app.put('/updateProduct/{product_id}')
+@app.put('/updateProduct/{product_id}', tags=['Products'])
 async def updateProduct(product_id: int, product: schemas.Product, db: Session = Depends(getDB)):
     product_id = db.query(models.Product).filter_by(id=product_id)
     if not product_id.first():
@@ -95,7 +95,7 @@ async def updateProduct(product_id: int, product: schemas.Product, db: Session =
 
 
 # Add New Seller in Seller DB
-@app.post('/addSeller', response_model=schemas.DisplaySeller)
+@app.post('/addSeller', response_model=schemas.DisplaySeller, tags=['Seller'])
 async def addSeller(request_seller: schemas.Seller, db: Session = Depends(getDB)):
     hash_password = pwd_context.hash(request_seller.password)
     seller = models.Seller(name=request_seller.name, username=request_seller.username, password=hash_password,
