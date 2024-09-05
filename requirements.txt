@@ -3,3 +3,5 @@ sqlalchemy~=2.0.33
 uvicorn
 pydantic~=2.8.2
 starlette~=0.38.4
+bcrypt~=4.2.0
+passlib~=1.7.4

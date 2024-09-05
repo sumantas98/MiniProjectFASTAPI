@@ -8,3 +8,14 @@ class Product(Base):
     name = Column(String)
     description = Column(String)
     price = Column(Integer)
+
+
+class Seller(Base):
+    __tablename__ = 'sellers'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String)
+    username = Column(String)
+    password = Column(String)
+    email = Column(String)
+    phone = Column(String)
+    address = Column(String)
