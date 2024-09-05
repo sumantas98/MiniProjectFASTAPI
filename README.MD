@@ -16,7 +16,7 @@ All the required packages has been listed inside 'requirements.txt' file.
 
 Execute the below command in your active directory to install all packages for this project.
 >> pip install -r requirements.txt
-> 
+>  
 >>python.exe -m pip install --upgrade pip
 ## Database Design:
 This product API is using SQLAlchemy orm modules to handle all requests.
