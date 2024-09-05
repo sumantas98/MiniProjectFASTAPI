@@ -9,7 +9,23 @@ from . import models
 from .database import engine_n, SessionLocal
 from passlib.context import CryptContext
 
-app = FastAPI()
+app = FastAPI(
+    title='Products API',
+    description='API will provide to access all product info along with seller details. Developer can access this api '
+                'to perform the below operations.',
+    version='0.1.0',
+    terms_of_service='https://github.com/sumantas98',
+    contact={
+        'Developer Name': 'Sumanta Samanta',
+        'website': 'https://www.linkedin.com/in/sumanta-samanta-3261a317a/',
+        'email': 'sumantasamanta98.gmail.com',
+    },
+    license_info={
+        'name': 'License',
+        'url': 'https://www.google.com',
+    }
+
+)
 models.Base.metadata.create_all(bind=engine_n)
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -28,7 +44,7 @@ async def root():
 
 
 # Get All Product Details
-@app.get("/products", response_model=List[schemas.Product], status_code=201)
+@app.get("/allProducts", response_model=List[schemas.CustomDisplay], status_code=201)
 async def products(db: Session = Depends(getDB)):
     product_ = db.query(models.Product).all()
     if not product_:
@@ -37,7 +53,7 @@ async def products(db: Session = Depends(getDB)):
 
 
 # Get Product Details by ID Value
-@app.get("/product_id", response_model=schemas.CustomDisplay)
+@app.get("/singleProductById", response_model=schemas.CustomDisplay)
 async def products(product_id, response: Response, db: Session = Depends(getDB)):
     product_id = db.query(models.Product).filter_by(id=product_id).first()
     if not product_id:
@@ -46,19 +62,20 @@ async def products(product_id, response: Response, db: Session = Depends(getDB))
 
 
 # Remove a specific Product by ID value
-@app.delete("/product_delete")
+@app.delete("/deleteProduct")
 async def products(db: Session = Depends(getDB), product_id: int = None):
     product_id = db.query(models.Product).filter_by(id=product_id).delete(synchronize_session=False)
     if not product_id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Product not found')
     db.commit()
-    return "Product deleted"
+    return "Product Deleted Successfully"
 
 
 # Add New Product in DB Using Postman call/ FastAPI Docs.
 @app.post('/addProduct')
 async def addProduct(product: schemas.Product, db: Session = Depends(getDB)):
-    new_product = models.Product(name=product.name, price=product.price, description=product.description)
+    new_product = models.Product(name=product.name, price=product.price, description=product.description,
+                                 seller_id=product.seller_id)
     db.add(new_product)
     db.commit()
     db.refresh(new_product)
@@ -74,7 +91,7 @@ async def updateProduct(product_id: int, product: schemas.Product, db: Session =
     else:
         product_id.update(product.dict())
         db.commit()
-        return "Product updated"
+        return "Product Updated Successfully"
 
 
 # Add New Seller in Seller DB

@@ -5,6 +5,7 @@ class Product(BaseModel):
     name: str
     price: int
     description: str
+    seller_id: int
 
 
 class Seller(BaseModel):
@@ -30,6 +31,7 @@ class DisplaySeller(BaseModel):
 class CustomDisplay(BaseModel):
     name: str
     description: str
+    seller: DisplaySeller
 
     class Config:
         orm_mode = True
