@@ -11,7 +11,9 @@ SessionLocal = sessionmaker(bind=engine_n, autocommit=False, autoflush=False)
 Base = declarative_base()
 
 
-
-
-
-
+def getDB():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

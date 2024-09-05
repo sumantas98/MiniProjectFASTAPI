@@ -30,6 +30,7 @@ https://github.com/sumantas98/MiniProjectFASTAPI/commits?author=sumantas98&since
 
 ## Additional Information & API Snippet:
 ![img.png](img.png)
+
 ## TestCases:
 
 ## Mandatory Notes:
