@@ -3,6 +3,7 @@ from . import models
 from .database import engine_n, SessionLocal
 from .routers import product
 from .routers import seller
+from .routers import login
 
 app = FastAPI(
     title='Products API',
@@ -29,5 +30,6 @@ async def root():
 
 app.include_router(product.router)
 app.include_router(seller.router)
+app.include_router(login.router)
 
 models.Base.metadata.create_all(bind=engine_n)

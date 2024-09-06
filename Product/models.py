@@ -23,3 +23,4 @@ class Seller(Base):
     phone = Column(String)
     address = Column(String)
     products = relationship('Product', back_populates='seller')
+
