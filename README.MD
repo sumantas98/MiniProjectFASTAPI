@@ -50,3 +50,4 @@ https://github.com/sumantas98/MiniProjectFASTAPI/commits?author=sumantas98&since
 2. Install all above packages along with python.
 3. run the below command in cmd from project main directory else set up the entire project in pyCharm 
 >> python.exe -m uvicorn Product.main:app --reload 
+> 
